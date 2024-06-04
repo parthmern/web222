@@ -101,6 +101,14 @@ function getTotalResults(data) {
  ******************************************************************************/
 function speciesCoordinates(data) {
   // TODO
+
+  const results = data.results;
+  for (let i = 0; i < results.length; i++) {
+      const species = results[i].species_guess;
+      const location = results[i].location;
+      console.log(`"${species}" observed at coordinates (${location})`);
+  }
+
 }
 
 /*******************************************************************************
@@ -113,6 +121,12 @@ function speciesCoordinates(data) {
  ******************************************************************************/
 function speciesCoordinates2(data) {
   // TODO
+  const results = data.results;
+  results.forEach(observation => {
+      const species = observation.species_guess;
+      const location = observation.location;
+      console.log(`"${species}" observed at coordinates (${location})`);
+  });
 }
 
 /*******************************************************************************
@@ -130,6 +144,14 @@ function speciesCoordinates2(data) {
  ******************************************************************************/
 function speciesCoordinates3(data) {
   // TODO
+  const results = data.results;
+  for (const observation of results) {
+      const species = observation.species_guess;
+      // const location = observation.location;     // -> giving 1 error
+      
+      const location = observation.location.split(',').join(', ');
+      console.log(`"${species}" observed at coordinates (${location})`);
+  }
 }
 
 /*******************************************************************************
