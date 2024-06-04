@@ -148,7 +148,7 @@ function speciesCoordinates3(data) {
   for (const observation of results) {
       const species = observation.species_guess;
       // const location = observation.location;     // -> giving 1 error
-      
+
       const location = observation.location.split(',').join(', ');
       console.log(`"${species}" observed at coordinates (${location})`);
   }
@@ -193,6 +193,26 @@ function speciesCoordinates3(data) {
  ******************************************************************************/
 function observationsByQualityGrade(data, qualityGrade) {
   // TODO
+
+  // availabe types
+  const allowedGrades = ["research", "needs_id", "casual", null];
+
+    if (typeof qualityGrade === 'string') {
+        qualityGrade = qualityGrade.toLowerCase();
+    }
+
+    if (!allowedGrades.includes(qualityGrade)) {
+        throw new Error("Invalid quality grade");
+    }
+
+    const finalAns = data.results.filter((observation) => {
+      return(
+        observation.quality_grade === qualityGrade
+      )
+    })
+
+    return finalAns ;
+
 }
 
 /*******************************************************************************
@@ -216,6 +236,41 @@ function observationsByQualityGrade(data, qualityGrade) {
  ******************************************************************************/
 function observationsByQualityGrades(data, ...qualityGrades) {
   // TODO
+
+  // atleast 1 hona chiye
+  if (qualityGrades.length < 1) {
+    throw new Error("At least one quality grade must be provided");
+  }
+
+  console.log("qualityGrades=>", qualityGrades);
+
+  const allowedGrades = ["research", "needs_id", "casual", null];
+
+  const lowerCaseGrades = qualityGrades.map(grade => {
+      if (typeof grade === 'string') {
+          return grade.toLowerCase();
+      }
+      return grade;
+  });
+
+  console.log(lowerCaseGrades);
+
+  for (const grade of lowerCaseGrades) {
+      if (!allowedGrades.includes(grade)) {
+          throw new Error("Invalid quality grade: " + grade);
+      }
+  }
+
+  const finalAns = [];
+
+  for (const observation of data.results) {
+      if (lowerCaseGrades.includes(observation.quality_grade)) {
+          finalAns.push(observation);
+      }
+  }
+
+  return finalAns;
+
 }
 
 /*******************************************************************************
